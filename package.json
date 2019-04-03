@@ -1,0 +1,28 @@
+{
+  "name": "changelogged",
+  "version": "0.0.1",
+  "description": "Generate a release changelog",
+  "main": "index.js",
+  "bin": {
+    "changelogger": "./dist/index.js"
+  },
+  "scripts": {
+    "test": "mocha -r ts-node/register --watch-extensions=ts,tsx src/**.test.ts"
+  },
+  "author": "Marvin Hagemeister <hello@marvinh.dev>",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/mocha": "^5.2.6",
+    "@types/mri": "^1.1.0",
+    "@types/node": "^11.13.0",
+    "lint-staged": "^8.1.5",
+    "mocha": "^6.0.2",
+    "prettier": "^1.16.4",
+    "ts-node": "^8.0.3",
+    "typescript": "^3.4.1"
+  },
+  "dependencies": {
+    "mri": "^1.1.4",
+    "kleur": "^3.0.2"
+  }
+}
