@@ -33,3 +33,22 @@ export function parseArgs(argv: string[]): CliArgs {
 
   return args;
 }
+
+export const help = `
+🔍 Autogenerate a Changelog based on merged PRs
+
+Usage:
+  $ changelogged [options] <range>
+
+Options:
+  --token, -t     GitHub API token to use (required)
+  --help, -h      Show usage information and the options listed here
+  --version, -v   Show version information
+
+Examples:
+  Get all PRs made starting from a git tag
+  $ changelogged --token=123456789 v1.2.0..HEAD
+
+  Get all PRs since commit "abc"
+  $ changelogged --token=123456789 abc..HEAD
+`;

@@ -4,7 +4,8 @@
     "module": "commonjs",
     "moduleResolution": "node",
     "esModuleInterop": true,
-    "outDir": "dist/"
+    "outDir": "dist/",
+    "strict": true
   },
   "files": ["./src/index.ts"]
 }

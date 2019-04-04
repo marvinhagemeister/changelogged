@@ -7,7 +7,7 @@ export function getRepo() {
 
     originReg.lastIndex = 0;
     const m = originReg.exec(raw);
-    return m[1];
+    return m ? m[1] : null;
   } catch (err) {
     throw new Error("No valid GitHub remote found");
   }
@@ -21,6 +21,7 @@ export function parseCommit(input: string) {
   prReg.lastIndex = 0;
 
   const m = reg.exec(input);
+  if (!m) return null;
   const m2 = prReg.exec(m[3]);
 
   return {
@@ -34,10 +35,11 @@ export function parseCommit(input: string) {
 export function parseCommits(range: string) {
   const commits = exec(`git log --format="%H %ct %s" ${range}`)
     .split("\n")
-    .map(parseCommit);
+    .map(parseCommit)
+    .filter(Boolean);
 
   return {
-    start: commits.length ? commits[0].time : 0,
-    prs: commits.filter(x => x.number != null).map(x => x.number)
+    start: commits.length ? commits[0]!.time : 0,
+    prs: commits.filter(x => x!.number !== null).map(x => x!.number)
   };
 }

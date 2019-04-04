@@ -1,32 +1,15 @@
 import { createFetch, fetchPRs, fetchSinglePR } from "./api";
-import { parseArgs } from "./cli";
+import { parseArgs, help } from "./cli";
 import { parseCommits, getRepo } from "./git";
 import { formatPR, toTime } from "./util";
 import { green } from "kleur";
-import { logWarn, logError, log } from "./logger";
+import { logError, log } from "./logger";
 
 async function run() {
   try {
     const args = parseArgs(process.argv.slice(2));
     if (args.help) {
-      console.log(`
-🔍 Autogenerate a Changelog based on merged PRs
-
-Usage:
-  $ changelogged [options] <range>
-
-Options:
-  --token, -t     GitHub API token to use (required)
-  --help, -h      Show usage information and the options listed here
-  --version, -v   Show version information
-
-Examples:
-  Get all PRs made starting from a git tag
-  $ changelogged --token=123456789 v1.2.0..HEAD
-
-  Get all PRs since commit "abc"
-  $ changelogged --token=123456789 abc..HEAD
-`);
+      console.log(help);
       return;
     } else if (args.version) {
       console.log(require("../package.json").version);
@@ -34,6 +17,7 @@ Examples:
     }
 
     const repo = getRepo();
+    if (!repo) throw new Error("Could not detect repo name");
     log("GitHub: " + green(repo));
 
     const parsed = parseCommits(args._[0]);
@@ -52,7 +36,9 @@ Examples:
     // need to query them separately. This happens when a branch was merged
     // into another PR
     const missed = await Promise.all(
-      Array.from(found).map(id => fetchSinglePR(fetch, repo, id))
+      Array.from(found)
+        .filter(Boolean)
+        .map(id => fetchSinglePR(fetch, repo, id!))
     );
 
     prs = prs

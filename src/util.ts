@@ -1,4 +1,5 @@
 import { execSync } from "child_process";
+import { PRsRes as Pull } from "./api";
 
 /**
  * Executes a shell comand and returns the raw cli output
@@ -15,6 +16,6 @@ export const exec = (cmd: string) =>
  */
 export const toTime = (timestamp: string) => new Date(timestamp).getTime();
 
-export function formatPR(pr) {
+export function formatPR(pr: Pull) {
   return `- ${pr.title} (#${pr.number}, thanks @${pr.author.login})`;
 }
