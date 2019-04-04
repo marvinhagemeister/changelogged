@@ -4,12 +4,7 @@ import { parseCommits, getRepo } from "./git";
 import { formatPR, toTime } from "./util";
 import { green } from "kleur";
 import { logError, log } from "./logger";
-import readline from "readline";
-
-const rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout
-});
+import readline from "readline-sync";
 
 async function run() {
   try {
@@ -22,11 +17,8 @@ async function run() {
       return;
     }
 
-    const token = await new Promise<string>(resolve => {
-      rl.question("Paste your GitHub API token: ", answer => {
-        rl.close();
-        resolve(answer);
-      });
+    const token = readline.question("Paste your GitHub API token: ", {
+      hideEchoBack: true
     });
 
     const repo = getRepo();
