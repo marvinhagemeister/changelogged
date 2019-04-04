@@ -4,6 +4,12 @@ import { parseCommits, getRepo } from "./git";
 import { formatPR, toTime } from "./util";
 import { green } from "kleur";
 import { logError, log } from "./logger";
+import readline from "readline";
+
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout
+});
 
 async function run() {
   try {
@@ -16,6 +22,13 @@ async function run() {
       return;
     }
 
+    const token = await new Promise<string>(resolve => {
+      rl.question("Paste your GitHub API token: ", answer => {
+        rl.close();
+        resolve(answer);
+      });
+    });
+
     const repo = getRepo();
     if (!repo) throw new Error("Could not detect repo name");
     log("GitHub: " + green(repo));
@@ -27,7 +40,7 @@ async function run() {
 
     const found = new Set(parsed.prs);
 
-    const fetch = createFetch(args.token, repo);
+    const fetch = createFetch(token, repo);
     let prs = await fetchPRs(fetch, repo, parsed.prs.length);
     prs = prs.filter(x => found.has(x.number));
     prs.forEach(x => found.delete(x.number));

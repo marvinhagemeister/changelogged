@@ -22,12 +22,4 @@ describe("cli", () => {
     t.throws(() => parseArgs(["--token"]));
     t.throws(() => parseArgs(["-t"]));
   });
-
-  it("should parse token", () => {
-    let parsed = parseArgs(["--token=123", "a..b"]);
-    t.equal(parsed.token, "123");
-
-    parsed = parseArgs(["-t=123", "a..b"]);
-    t.equal(parsed.token, "123");
-  });
 });
