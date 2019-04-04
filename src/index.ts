@@ -2,6 +2,7 @@ import { createFetch, fetchPRs, fetchSinglePR } from "./api";
 import { parseArgs } from "./cli";
 import { parseCommits, getRepo } from "./git";
 import { formatPR, toTime } from "./util";
+import { green } from "kleur";
 import { logWarn, logError, log } from "./logger";
 
 async function run() {
@@ -12,13 +13,20 @@ async function run() {
 🔍 Autogenerate a Changelog based on merged PRs
 
 Usage:
-  $ perfdoc [options] <file>
+  $ changelogged [options] <range>
 
 Options:
   --token, -t     GitHub API token to use (required)
   --help, -h      Show usage information and the options listed here
   --version, -v   Show version information
-      `);
+
+Examples:
+  Get all PRs made starting from a git tag
+  $ changelogged --token=123456789 v1.2.0..HEAD
+
+  Get all PRs since commit "abc"
+  $ changelogged --token=123456789 abc..HEAD
+`);
       return;
     } else if (args.version) {
       console.log(require("../package.json").version);
@@ -26,26 +34,19 @@ Options:
     }
 
     const repo = getRepo();
+    log("GitHub: " + green(repo));
 
     const parsed = parseCommits(args._[0]);
     if (!parsed.prs.length) {
-      throw new Error("No PRs found");
+      throw new Error("No PRs found in the specified range");
     }
 
     const found = new Set(parsed.prs);
 
     const fetch = createFetch(args.token, repo);
-    const prs = await fetchPRs(fetch, repo, parsed.prs.length);
-    prs.sort((a, b) => toTime(a.mergedAt) - toTime(b.mergedAt));
-
-    prs.forEach(x => {
-      if (!found.has(x.number)) {
-        throw new Error(
-          "Your current branch is not up to date with the remote\n"
-        );
-      }
-      found.delete(x.number);
-    });
+    let prs = await fetchPRs(fetch, repo, parsed.prs.length);
+    prs = prs.filter(x => found.has(x.number));
+    prs.forEach(x => found.delete(x.number));
 
     // If there are any remaining PR ids where we have no PR object we
     // need to query them separately. This happens when a branch was merged
@@ -54,20 +55,15 @@ Options:
       Array.from(found).map(id => fetchSinglePR(fetch, repo, id))
     );
 
-    const formatted = prs
+    prs = prs
       .concat(missed.filter(Boolean))
-      .map(formatPR)
-      .join("\n");
+      .sort((a, b) => toTime(a.mergedAt) - toTime(b.mergedAt))
+      .reverse();
 
-    if (found.size > 0) {
-      logWarn(
-        "The following PRs could not be found: " + Array.from(found).join(", ")
-      );
-    } else {
-      log(`PRs: ${prs.length}\n`);
-      // eslint-disable-next-line no-console
-      console.log(formatted);
-    }
+    log("PRs: " + green(prs.length));
+
+    console.error();
+    console.log(prs.map(formatPR).join("\n"));
   } catch (err) {
     logError(err.message);
     process.exit(1);

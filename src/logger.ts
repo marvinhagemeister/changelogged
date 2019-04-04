@@ -5,7 +5,7 @@ export function logWarn(msg: string) {
 }
 
 export function logError(msg: string) {
-  console.error(red("(!) " + msg));
+  console.error(red("(!) Error: " + msg));
 }
 
 export function log(msg: string) {

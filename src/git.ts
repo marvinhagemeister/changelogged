@@ -1,16 +1,5 @@
 import { exec } from "./util";
 
-export function parseLog(input: string) {
-  return input
-    .split(/commit [a-z0-9]+ (?:\([A-Za-z0-9]+ -> [A-Za-z0-9]+\))\s*[\n]/)
-    .map(x => x.trim())
-    .filter(Boolean);
-}
-
-export function getCommitTimeStamp(commit: string) {
-  return exec("git show -s --format=%ci " + commit);
-}
-
 export function getRepo() {
   const originReg = /:([A-Za-z0-9]+\/[A-Za-z0-9]+)\.git$/;
   try {
@@ -33,6 +22,7 @@ export function parseCommit(input: string) {
 
   const m = reg.exec(input);
   const m2 = prReg.exec(m[3]);
+
   return {
     hash: m[1],
     time: m[2],
@@ -44,9 +34,10 @@ export function parseCommit(input: string) {
 export function parseCommits(range: string) {
   const commits = exec(`git log --format="%H %ct %s" ${range}`)
     .split("\n")
-    .filter(Boolean)
     .map(parseCommit);
 
-  const start = commits.length ? commits[0].time : 0;
-  return { start, prs: commits.map(x => x.number) };
+  return {
+    start: commits.length ? commits[0].time : 0,
+    prs: commits.filter(x => x.number != null).map(x => x.number)
+  };
 }

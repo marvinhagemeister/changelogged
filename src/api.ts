@@ -1,5 +1,6 @@
 import { yellow } from "kleur";
 import fetch from "node-fetch";
+import { logWarn, logError } from "./logger";
 
 /**
  * Create an easy to use Promise-based function to query the backend
@@ -7,7 +8,6 @@ import fetch from "node-fetch";
  * @param repo Name of the repository
  */
 export const createFetch = (token: string, repo: string) => (query: string) => {
-  console.log(repo);
   return fetch("https://api.github.com/graphql", {
     method: "POST",
     headers: {
@@ -34,15 +34,16 @@ export async function fetchPRs(
   request: (query: string) => any,
   repo: string,
   count: number
-) {
+): Promise<PRsRes[]> {
   const [owner, name] = repo.split("/");
-  console.log(name, owner, count);
-
-  const pulls: PRsRes[] = [];
 
   // GitHub has a limit of 100 items per page
-  for (let i = 0; i < count; i += 100) {
-    const data = await request(`
+  if (count > 100) {
+    throw new Error(
+      "Support for fetching more than 100 PRs is currently not supported"
+    );
+  }
+  const data = await request(`
 		{
 			repository(name: "${name}", owner: "${owner}") {
 				pullRequests(states: MERGED, last: ${count}, orderBy: {field: CREATED_AT, direction: ASC}) {
@@ -59,10 +60,7 @@ export async function fetchPRs(
 		}
   `);
 
-    pulls.push(...data.data.repository.pullRequests.nodes);
-  }
-
-  return pulls;
+  return data.data.repository.pullRequests.nodes;
 }
 
 export async function fetchSinglePR(fetch: any, repo: string, id: number) {
@@ -83,11 +81,27 @@ export async function fetchSinglePR(fetch: any, repo: string, id: number) {
     `);
 
   if (data.errors) {
-    console.warn(
-      yellow("PR not found, maybe that's a GitHub issue instead?: " + id)
-    );
+    const type = await fetchType(fetch, repo, id);
+    if (type === "PullRequest") {
+      throw new Error(`PR #${id} not found`);
+    }
     return null;
   }
 
   return data.data.repository.pullRequest;
+}
+
+export async function fetchType(fetch: any, repo: string, id: number) {
+  const [owner, name] = repo.split("/");
+  const data = await fetch(`
+			{
+				repository(name: "${name}", owner: "${owner}") {
+					issueOrPullRequest(number: ${id}) {
+						__typename
+					}
+				}
+			}
+    `);
+
+  return data.data.repository.issueOrPullRequest.__typename;
 }
