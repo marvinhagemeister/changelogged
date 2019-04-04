@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 import { createFetch, fetchPRs, fetchSinglePR } from "./api";
 import { parseArgs, help } from "./cli";
 import { parseCommits, getRepo } from "./git";
