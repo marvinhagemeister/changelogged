@@ -19,7 +19,7 @@ export function parseArgs(argv: string[]): CliArgs {
   if (!args.help && !args.version) {
     if (!args._.length) {
       throw new Error(
-        "Please specify a valid commit range in the form of HEAD..mytag"
+        "Please specify a valid commit range in the form of mytag..HEAD"
       );
     }
   }
