@@ -8,7 +8,7 @@
   },
   "scripts": {
     "test": "mocha -r ts-node/register --watch-extensions=ts,tsx src/**.test.ts",
-    "build": "rm -rf dist/ && tsc"
+    "build": "rm -rf dist/ && tsc && chmod a+x dist/index.js"
   },
   "files": [
     "dist/"
