@@ -7,7 +7,8 @@
     "changelogger": "./dist/index.js"
   },
   "scripts": {
-    "test": "mocha -r ts-node/register --watch-extensions=ts,tsx src/**.test.ts"
+    "test": "mocha -r ts-node/register --watch-extensions=ts,tsx src/**.test.ts",
+    "build": "tsc"
   },
   "author": "Marvin Hagemeister <hello@marvinh.dev>",
   "license": "MIT",

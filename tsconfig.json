@@ -3,6 +3,8 @@
     "target": "es2015",
     "module": "commonjs",
     "moduleResolution": "node",
-    "esModuleInterop": true
-  }
+    "esModuleInterop": true,
+    "outDir": "dist/"
+  },
+  "files": ["./src/index.ts"]
 }
