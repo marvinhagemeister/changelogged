@@ -4,7 +4,7 @@
   "description": "Generate a release changelog",
   "main": "index.js",
   "bin": {
-    "changelogger": "./dist/index.js"
+    "changelogged": "./dist/index.js"
   },
   "scripts": {
     "test": "mocha -r ts-node/register --watch-extensions=ts,tsx src/**.test.ts",
@@ -23,7 +23,9 @@
     "typescript": "^3.4.1"
   },
   "dependencies": {
+    "@types/node-fetch": "^2.1.7",
+    "kleur": "^3.0.2",
     "mri": "^1.1.4",
-    "kleur": "^3.0.2"
+    "node-fetch": "^2.3.0"
   }
 }
