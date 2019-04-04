@@ -16,6 +16,19 @@ yarn add -g changelogged
 
 Then `cd` in your git repository and run `changelogged <tagOrCommit>..HEAD`. Enter your GitHub Token et voilà!
 
+Example output:
+
+```bash
+GitHub: developit/preact
+PRs: 3
+
+- move JSX namespace into preact one (#1448, thanks @just-boris)
+- Remove unused component import (#1508, thanks @marvinhagemeister)
+- (fix) - debug message should not throw for undefined and null (#1505, thanks @JoviDeCroock)
+```
+
+Full cli args:
+
 ```bash
 🔍 Autogenerate a Changelog based on merged PRs
 
