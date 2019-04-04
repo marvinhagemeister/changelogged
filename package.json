@@ -8,8 +8,11 @@
   },
   "scripts": {
     "test": "mocha -r ts-node/register --watch-extensions=ts,tsx src/**.test.ts",
-    "build": "tsc"
+    "build": "rm -rf dist/ && tsc"
   },
+  "files": [
+    "dist/"
+  ],
   "author": "Marvin Hagemeister <hello@marvinh.dev>",
   "license": "MIT",
   "devDependencies": {
