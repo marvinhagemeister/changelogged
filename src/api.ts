@@ -12,9 +12,9 @@ export const createFetch = (token: string, repo: string) => (query: string) => {
       "Content-Type": "application/json",
       "User-Agent": repo // Required
     },
-    body: JSON.stringify({
+    body: {
       query: query.replace(/[\n]/g, "")
-    })
+    }
   }).then(res => res.data);
 };
 
