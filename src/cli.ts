@@ -4,13 +4,15 @@ export interface CliArgs {
   _: string;
   help: boolean;
   version: boolean;
-  repo: string;
+  format: string;
 }
 
 export function parseArgs(argv: string[]): CliArgs {
   const args = (mri(argv, {
+    string: ["format"],
     boolean: ["help", "version"],
     alias: {
+      f: "format",
       h: "help",
       v: "version"
     }
@@ -34,13 +36,17 @@ Usage:
   $ changelogged [options] <range>
 
 Options:
+  --format, -f    Format changelog entry
   --help, -h      Show usage information and the options listed here
   --version, -v   Show version information
 
 Examples:
   Get all PRs made starting from a git tag
-  $ changelogged --token=123456789 v1.2.0..HEAD
+  $ changelogged v1.2.0..HEAD
 
   Get all PRs since commit "abc"
-  $ changelogged --token=123456789 abc..HEAD
+  $ changelogged abc..HEAD
+
+  Format output:
+  $ changelogged --format='PR: %n, msg: %m, author: %a' v1..HEAD
 `;

@@ -16,6 +16,9 @@ export const exec = (cmd: string) =>
  */
 export const toTime = (timestamp: string) => new Date(timestamp).getTime();
 
-export function formatPR(pr: Pull) {
-  return `- ${pr.title} (#${pr.number}, thanks @${pr.author.login})`;
+export function formatPR(pr: Pull, format = "- %m (#%n, thanks @%a)") {
+  return format
+    .replace("%n", "" + pr.number)
+    .replace("%m", pr.title)
+    .replace("%a", pr.author.login);
 }

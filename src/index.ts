@@ -55,7 +55,7 @@ async function run() {
     log("PRs: " + green(prs.length));
 
     console.error();
-    console.log(prs.map(formatPR).join("\n"));
+    console.log(prs.map(x => formatPR(x, args.format)).join("\n"));
   } catch (err) {
     logError(err.message);
     process.exit(1);
