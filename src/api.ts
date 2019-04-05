@@ -1,6 +1,4 @@
-import { yellow } from "kleur";
-import fetch from "node-fetch";
-import { logWarn, logError } from "./logger";
+import { post } from "httpie";
 
 /**
  * Create an easy to use Promise-based function to query the backend
@@ -8,8 +6,7 @@ import { logWarn, logError } from "./logger";
  * @param repo Name of the repository
  */
 export const createFetch = (token: string, repo: string) => (query: string) => {
-  return fetch("https://api.github.com/graphql", {
-    method: "POST",
+  return post("https://api.github.com/graphql", {
     headers: {
       Authorization: "bearer " + token,
       "Content-Type": "application/json",
@@ -18,7 +15,7 @@ export const createFetch = (token: string, repo: string) => (query: string) => {
     body: JSON.stringify({
       query: query.replace(/[\n]/g, "")
     })
-  }).then(res => res.json());
+  }).then(res => res.data);
 };
 
 export interface PRsRes {
