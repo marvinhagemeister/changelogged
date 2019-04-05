@@ -19,7 +19,6 @@
     "@types/mocha": "^5.2.6",
     "@types/mri": "^1.1.0",
     "@types/node": "^11.13.0",
-    "@types/node-fetch": "^2.1.7",
     "@types/readline-sync": "^1.4.3",
     "lint-staged": "^8.1.5",
     "mocha": "^6.0.2",
@@ -28,9 +27,9 @@
     "typescript": "^3.4.1"
   },
   "dependencies": {
+    "httpie": "^1.1.1",
     "kleur": "^3.0.2",
     "mri": "^1.1.4",
-    "node-fetch": "^2.3.0",
     "readline-sync": "^1.4.9"
   }
 }
