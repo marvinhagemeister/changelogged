@@ -4,7 +4,7 @@ This is a simple module to autogenerate a list of merged PRs in a given commit r
 
 People kept asking me what tool I use, so I spent 2 evenings adding proper error handling and converting it into a proper module. It's by no means perfect and doesn't support advanced features or anything, but it does the job for me. I mainly published it because it may prove to be useful for other OSS peers. I'm open to accept PRs though, if somebody wants to add that.
 
-_Note: It's limited to 100 possible entries in a range and ou need a valid [GitHub API token](https://developer.github.com/v4/guides/forming-calls/#authenticating-with-graphql) to be able to use this module._
+_Note: It's limited to 100 possible entries in a range and you need a valid [GitHub API token](https://developer.github.com/v4/guides/forming-calls/#authenticating-with-graphql) to be able to use this module._
 
 ## Usage
 
@@ -36,7 +36,15 @@ Usage:
   $ changelogged [options] <range>
 
 Options:
-  --format, -f    Format changelog entry
+  --format, -f    Format changelog entry. The following special characters
+                  will be replaced:
+
+                  %n = PR number
+                  %m = Commit message (1st line)
+                  %a = PR author
+
+                  The default is: '- %m (#%n, thanks @%a)'
+
   --help, -h      Show usage information and the options listed here
   --version, -v   Show version information
 

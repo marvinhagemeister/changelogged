@@ -36,7 +36,15 @@ Usage:
   $ changelogged [options] <range>
 
 Options:
-  --format, -f    Format changelog entry
+  --format, -f    Format changelog entry. The following special characters
+                  will be replaced:
+
+                  %n = PR number
+                  %m = Commit message (1st line)
+                  %a = PR author
+
+                  The default is: '- %m (#%n, thanks @%a)'
+
   --help, -h      Show usage information and the options listed here
   --version, -v   Show version information
 
