@@ -1,7 +1,7 @@
 import { exec } from "./util";
 
 export function getRepo() {
-  const originReg = /:([A-Za-z0-9]+\/[A-Za-z0-9]+)\.git$/;
+  const originReg = /:([A-Za-z0-9-]+\/[A-Za-z0-9-]+)\.git$/;
   try {
     const raw = exec("git config --get remote.origin.url");
 
