@@ -1,4 +1,4 @@
-import * as t from "assert";
+import { strict as t } from "assert";
 import { toTime, exec } from "./util";
 
 describe("exec", () => {

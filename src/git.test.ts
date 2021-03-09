@@ -1,4 +1,4 @@
-import * as t from "assert";
+import { strict as t } from "assert";
 import { parseCommit } from "./git";
 
 describe("git", () => {
@@ -9,7 +9,7 @@ describe("git", () => {
       t.deepEqual(parseCommit(raw), {
         number: null,
         message: "pr fixes",
-        time: 1553973965,
+        time: "1553973965",
         hash: "b166426ce3ab6f62260532542af447b9975ee1aa"
       });
     });
