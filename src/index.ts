@@ -18,9 +18,13 @@ async function run() {
       return;
     }
 
-    const token = readline.question("Paste your GitHub API token: ", {
-      hideEchoBack: true
-    });
+    let token = args.token;
+
+    if (!args.token) {
+      token = readline.question("Paste your GitHub API token: ", {
+        hideEchoBack: true
+      });
+    }
 
     const repo = getRepo();
     if (!repo) throw new Error("Could not detect repo name");

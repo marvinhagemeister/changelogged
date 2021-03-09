@@ -19,7 +19,15 @@ describe("cli", () => {
   });
 
   it("should throw on missing token", () => {
-    t.throws(() => parseArgs(["--token"]));
-    t.throws(() => parseArgs(["-t"]));
+    t.throws(() => parseArgs(["--token", "foo..HEAD"]));
+    t.throws(() => parseArgs(["-t", "foo..HEAD"]));
+  });
+
+  it("should parse token", () => {
+    let parsed = parseArgs(["--token", "foo", "foo..HEAD"]);
+    t.equal(parsed.token, "foo");
+
+    parsed = parseArgs(["-t", "foo", "foo..HEAD"]);
+    t.equal(parsed.token, "foo");
   });
 });

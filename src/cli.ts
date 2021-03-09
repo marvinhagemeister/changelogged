@@ -5,15 +5,17 @@ export interface CliArgs {
   help: boolean;
   version: boolean;
   format: string;
+  token: string;
 }
 
 export function parseArgs(argv: string[]): CliArgs {
   const args = (mri(argv, {
-    string: ["format"],
+    string: ["format", "token"],
     boolean: ["help", "version"],
     alias: {
       f: "format",
       h: "help",
+      t: "token",
       v: "version"
     }
   }) as any) as CliArgs;
@@ -45,6 +47,7 @@ Options:
 
                   The default is: '- %m (#%n, thanks @%a)'
 
+  --token, -t     GitHub token to use for fetching repository data
   --help, -h      Show usage information and the options listed here
   --version, -v   Show version information
 
