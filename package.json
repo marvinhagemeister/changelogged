@@ -8,7 +8,8 @@
   },
   "scripts": {
     "test": "mocha -r ts-node/register --extension ts,tsx src/**.test.ts",
-    "build": "rm -rf dist/ && tsc && chmod a+x dist/index.js"
+    "build": "rm -rf dist/ && tsc && chmod a+x dist/index.js",
+    "prepublishOnly": "npm test && npm run build"
   },
   "files": [
     "dist/"
